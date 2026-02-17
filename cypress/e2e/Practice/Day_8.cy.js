@@ -2,6 +2,7 @@
 /// <reference types="cypress" />
 
 
+import 'cypress-mochawesome-reporter/register';
 
 
 
@@ -46,48 +47,27 @@
 */
 
 describe('Test Case 1: Register User using Fixture & Custom Commands', () => {
+    let userData;
+    let uniqueEmail;
 
-  let userData;
-  let uniqueEmail;
-
-  before(() => {
-    cy.fixture('FormFilldata').then((data) => {
-      userData = data;
-      uniqueEmail = "testuser" + Date.now() + "@mail.com";
+    before(() => {
+        cy.fixture('FormFilldata').then((data) => {
+            userData = data;
+            uniqueEmail = "testuser" + Date.now() + "@mail.com";
+        });
     });
-  });
 
-  it('Should register and delete user successfully', () => {
-
-    // 1-3
-    cy.visitHomePage();
-
-    // 4-5
-    cy.clickSignupLogin();
-
-    // 6-7
-    cy.signupUser(userData.name, uniqueEmail);
-
-    // 8
-    cy.contains('Enter Account Information').should('be.visible');
-
-    // 9-11
-    cy.fillAccountInformation(userData);
-
-    // 12
-    cy.fillAddressDetails(userData);
-
-    // 13-14
-    cy.createAccount();
-
-    // 15
-    cy.clickContinue();
-
-    // 16
-    cy.contains(`Logged in as ${userData.name}`).should('be.visible');
-
-    // 17-18
-    cy.deleteAccount();
-    cy.clickContinue();
-  });
+    it('Should register and delete user successfully', () => {
+        cy.visitHomePage();
+        cy.clickSignupLogin();
+        cy.signupUser(userData.name, uniqueEmail);
+        cy.contains('Enter Account Information').should('be.visible');
+        cy.fillAccountInformation(userData);
+        cy.fillAddressDetails(userData);
+        cy.createAccount();
+        cy.clickContinue();
+        cy.contains(`Logged in as ${userData.name}`).should('be.visible');
+        cy.deleteAccount();
+        cy.clickContinue();
+    });
 });
