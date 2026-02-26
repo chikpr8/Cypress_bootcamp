@@ -66,3 +66,38 @@ Cypress.Commands.add('deleteAccount', () => {
   cy.contains('Delete Account').click();
   cy.contains('Account Deleted!').should('be.visible');
 });
+
+Cypress.Commands.add("createUserAPI", (user) => {
+  cy.request({
+    method: "POST",
+    url: "https://automationexercise.com/api/createAccount",
+    form: true,
+    body: {
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      title: "Mr",
+      birth_date: "10",
+      birth_month: "January",
+      birth_year: "1995",
+      firstname: "Praveen",
+      lastname: "Raj",
+      company: "QA Company",
+      address1: "Test Street",
+      country: "India",
+      zipcode: "600001",
+      state: "TN",
+      city: "Chennai",
+      mobile_number: "9999999999"
+    }
+  }).then((response) => {
+
+    expect(response.status).to.eq(200)
+
+    const parsedBody = JSON.parse(response.body)
+
+    expect(parsedBody.responseCode).to.eq(201)
+    expect(parsedBody.message).to.include("User created")
+
+  })
+})
