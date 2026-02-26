@@ -21,3 +21,13 @@ module.exports = defineConfig({
     }
   }
 });
+
+export default defineConfig({
+  e2e: {
+    baseUrl: "https://reqres.in/api",
+    setupNodeEvents(on, config) {
+      config.env.apiKey = "reqres-free-v1";
+      return config;
+    }
+  }
+});
